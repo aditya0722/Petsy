@@ -5,20 +5,23 @@ import Signup from "./signup"
 import axios from "axios";
 export default function login() {
     const history =useNavigate();
-    const[Password,setPassword]=useState("")
-    const[Email,setEmal]=useState("")
-    function submitHandler(e){
+    const[password,setPassword]=useState("")
+    const[email,setEmal]=useState("")
+    const[result,setResult]=useState("")
+   async function submitHandler(e){
         e.preventDefault();
         try{
+            console.log(password);
             axios.post("http://localhost:5000/login",{
-                Email,Password
+                email,password
             })
             .then(res=>{
+                console.log(res.data);
                 if(res.data=="exits"){
                     history("/Home");
                 }
                 else{
-                    alert("Invalid Username or Psswword")
+                    setResult("Invalid Email or Pssword")
                 }
             })
         }
@@ -31,11 +34,12 @@ export default function login() {
         <div class="container-login">
             <form class="login-form" method="post" onSubmit={submitHandler}>
             <br/>
+            <center>
                 <h2>Welcome to  <span className="txt-foter-special">Petsy</span> Community</h2>
                 <br/>
                 <input type="email" placeholder="email" required onChange={(e)=>{setEmal(e.target.value)}}/>
                 <input type="password" placeholder="Password" required onChange={(e)=>{setPassword(e.target.value)}}/>
-                <button type="submit">Login</button>
+                <input type="submit" value="Login"/>
                 <br/>
                 <br/>
                 <span>Don't have an accout?</span>
@@ -44,7 +48,10 @@ export default function login() {
                 <Routes>
                 <Route path='/signup' element={<Signup/>}>Signup</Route>
                     </Routes>
-
+                    <br/>
+                    <br/>
+                </center>
+            <span className="result-output">{result}</span>
             </form>
         </div>
 

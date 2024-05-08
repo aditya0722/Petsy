@@ -17,7 +17,7 @@ const newSchema = new mongose.Schema({
     type: String,
     required: true,
   },
-  userName: { 
+  useName: { 
     type: String,
     required: true,
   },
