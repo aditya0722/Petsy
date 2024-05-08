@@ -5,7 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 export default function signup() {
     const history=useNavigate();
-    const [user, setuseName] = useState("");
+    const [useName, setuseName] = useState("");
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
     const [cPassword, setcPassword] = useState("");
@@ -14,11 +14,11 @@ export default function signup() {
 
         if(password===cPassword){
             try{
-                await axios.post("http://localhost:5173/signup",{
-                    user,email,password
+                await axios.post("http://localhost:5000/signup",{
+                    useName,email,password
                 }).then(res=>{
                     if(res.data=="exits"){
-                        alert("Invalid Username or Psswword")
+                        alert("Email Already Exits")
                     }
                     else{
                         history("/login");

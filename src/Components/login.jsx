@@ -10,7 +10,7 @@ export default function login() {
     function submitHandler(e){
         e.preventDefault();
         try{
-            axios.post("http://localhost:5173/login",{
+            axios.post("http://localhost:5000/login",{
                 Email,Password
             })
             .then(res=>{

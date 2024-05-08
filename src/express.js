@@ -4,13 +4,16 @@ const app=express();
 const PORT =process.env.PORT ||5000
 
 app.use(express.json())
-
+app.get("/",(req,res)=>{
+    res.write("this is server page");
+})
 app.post("/signup",async(req,res)=>{
-    const {user,email,password}=req.body;
+    const {useName,email,password}=req.body;
     const data={
-        user:user,
+        useName:useName,
         email:email,
         password:password
+        
     }
     try{
         const check= await collection.findOne({email:email})
@@ -23,7 +26,7 @@ app.post("/signup",async(req,res)=>{
         
     }
     catch(e){
-        res.json("notexits")
+        res.json(e)
     }
 })
 
@@ -40,11 +43,12 @@ app.post("/login",async(req,res)=>{
         
     }
     catch(e){
-        res.json("notExits")
+        res.json(e)
     }
 })
 
 app.listen(PORT,(error)=>{
+
 if(error){
     console.log(error);
 }
