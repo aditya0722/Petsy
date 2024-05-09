@@ -21,7 +21,7 @@ app.post("/signup",async(req,res)=>{
     
     try{
         const check= await collection.findOne({email:email})
-        console.log(check);
+       
         if(check!=null){
             res.json("exits")
         }
@@ -39,15 +39,19 @@ app.post("/signup",async(req,res)=>{
 
 app.post("/login",async(req,res)=>{
     const {email,password}=req.body;
-    console.log(email);
+   
     try{
         const check=await collection.findOne({email:email})
 
-        console.log(check);
+       
         if(check!=null){
+            
             const passcompaer= await bcrypt.compare(password,check.password)
-            if(passcompaer){
-                res.json("exits")
+            console.log(passcompaer);
+            if(passcompaer===true){
+                console.log(check.useName);
+                res.json({status:"exits",username:check.useName})
+                
             }
             else{
                 res.json("notExits")
@@ -59,7 +63,7 @@ app.post("/login",async(req,res)=>{
         }
     }
     catch(e){
-        console.log(e);
+       
         res.json(e)
     }
 })

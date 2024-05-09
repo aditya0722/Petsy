@@ -3,11 +3,13 @@ import "../App.css";
 import { Link,Routes,Route, useNavigate } from "react-router-dom";
 import Signup from "./signup"
 import axios from "axios";
-export default function login() {
+import NavigationBar from "./navigation";
+export default function login({onLogin}) {
     const history =useNavigate();
     const[password,setPassword]=useState("")
     const[email,setEmal]=useState("")
     const[result,setResult]=useState("")
+   
    async function submitHandler(e){
         e.preventDefault();
         try{
@@ -16,9 +18,13 @@ export default function login() {
                 email,password
             })
             .then(res=>{
-                console.log(res.data);
-                if(res.data=="exits"){
+                console.log(res.data.status);
+                let name=res.data.username;
+                if(res.data.status=="exits"){
+                    onLogin(name);
                     history("/Home");
+
+                    
                 }
                 else{
                     setResult("Invalid Email or Pssword")
@@ -53,7 +59,8 @@ export default function login() {
                 </center>
             <span className="result-output">{result}</span>
             </form>
+           
         </div>
-
+        
     );
 }
