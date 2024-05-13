@@ -7,9 +7,6 @@ const bcrypt =require("bcryptjs");
 app.use(cors());
 app.use(express.json())
 
-app.get("/",(req,res)=>{
-    res.write("this is server page");
-})
 app.post("/signup",async(req,res)=>{
     const {useName,email,password}=req.body;
     const data={

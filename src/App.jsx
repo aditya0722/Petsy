@@ -7,8 +7,10 @@ import Signup from './Components/signup';
 import Review from './Components/review';
 import Contact from './Components/contact';
 import About from './Components/about';
+import UserDashboard from './Components/userDashboard';
 import './App.css';
 import Footer from './Components/footer';
+import { logout } from './cookie';
 function App() {
   
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -22,6 +24,8 @@ function App() {
   const handleLogout = () => {
     setUsername('');
     setIsAuthenticated(false);
+    logout();
+
   }
   return (
     <>
@@ -29,14 +33,15 @@ function App() {
       <NavigationBar isAuthenticated={isAuthenticated} username={username} onLogout={handleLogout}/>
         
         <Routes>
-          <Route path='/Home' element={<Home/>}></Route>
+          <Route path='/' element={<Home onLogin={handleLogin}/>}></Route>
           <Route path="/login" element={<Login onLogin={handleLogin} />}></Route>
           <Route path='/signup' element={<Signup/>}></Route>
           <Route path='/review' element={<Review/>}></Route>
           <Route path='/contact' element={<Contact/>}></Route>
           <Route path='/About' element={<About/>}></Route>
+          <Route path='/userDashboard' element={<UserDashboard username={username}/>}></Route>
         </Routes>
-  
+
       <Footer/>
       
     </>

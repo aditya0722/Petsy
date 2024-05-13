@@ -4,13 +4,15 @@ import { Link,Routes,Route, useNavigate } from "react-router-dom";
 import Signup from "./signup"
 import axios from "axios";
 import NavigationBar from "./navigation";
+import { isLoggedIn,getCookie,setCookie } from "../cookie";
 export default function login({onLogin}) {
-    const history =useNavigate();
-    const[password,setPassword]=useState("")
-    const[email,setEmal]=useState("")
-    const[result,setResult]=useState("")
-   
-   async function submitHandler(e){
+//some hooks
+const history =useNavigate();
+const[password,setPassword]=useState("")
+const[email,setEmal]=useState("")
+const[result,setResult]=useState("")
+    //when submitting the value
+    async function submitHandler(e){
         e.preventDefault();
         try{
             console.log(password);
@@ -21,8 +23,10 @@ export default function login({onLogin}) {
                 console.log(res.data.status);
                 let name=res.data.username;
                 if(res.data.status=="exits"){
+                    setCookie("username",name,30)
+                    setCookie("email",email,30)
                     onLogin(name);
-                    history("/Home");
+                    history("/userDashboard");
 
                     
                 }
@@ -34,7 +38,15 @@ export default function login({onLogin}) {
         catch(e){
             console.log(e);
         }
+   if(isLoggedIn()){
+        onLogin(getCookie("username"));
+        history("/userDashboard")
+   }
+   else{
+    submitHandler();
     }
+   }
+  
     return (
 
         <div class="container-login">
@@ -56,7 +68,7 @@ export default function login({onLogin}) {
                     </Routes>
                     <br/>
                     <br/>
-                </center>
+            </center>
             <span className="result-output">{result}</span>
             </form>
            

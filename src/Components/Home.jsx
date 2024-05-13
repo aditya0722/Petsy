@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { isLoggedIn,getCookie } from "../cookie";
+function Home({ onLogin }) {
+  const history = useNavigate();
 
-export default function Home() {
-    return (
-        <>
-            <div className="home-container">
-                <h1>this is home page</h1>
-            </div>
-        </>
-    );
+  useEffect(() => {
+    if (isLoggedIn()) { 
+        onLogin(getCookie("username"))
+      history("/userDashboard");
+    }
+  }, []); 
+
+  return (
+    <div>
+      <h1> Home page content </h1>
+     
+    </div>
+  );
 }
+
+export default Home;

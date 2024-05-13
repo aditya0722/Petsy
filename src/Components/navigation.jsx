@@ -1,8 +1,8 @@
 import React from 'react';
+import { FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const NavigationBar = ({isAuthenticated,username,onLogout}) => {
-  
   return (
     <nav>
       <h2><span className='p-text'>P</span>
@@ -10,15 +10,15 @@ const NavigationBar = ({isAuthenticated,username,onLogout}) => {
       <div></div>
       
       <ul>
-        <li><Link to="/Home">Home</Link></li>
+        <li><Link to="/">Home</Link></li>
         <li><Link to="/about">About us</Link></li>
         <li><Link to="/contact">Contact us</Link></li>
         <li><Link to="/review">Review</Link></li>
       </ul>
      {isAuthenticated?(
       <ul>
-    <li> <span className='txt-name'>{username}</span></li>
-     <li><Link to="/Home" className='btn-login' onClick={onLogout}>logout</Link></li>
+    <li> <span className='txt-name'><FaUser/>&nbsp;{username}</span></li>
+     <li><Link to="/" className='btn-login' onClick={onLogout}>logout</Link></li>
      
      </ul>
      )
