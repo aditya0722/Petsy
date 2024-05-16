@@ -173,7 +173,7 @@ input[type="submit"]:hover{
 }
 
 .sidebar {
-  width: 200px;
+  width: 250px;
   background-color: f5f5f5;
   color: #fff;
   padding: 20px;
@@ -220,7 +220,7 @@ input[type="submit"]:hover{
 
 .dashboard-content {
   flex: 1;
-  padding: 20px;
+
 }
 
 .dashboard-section {
@@ -232,7 +232,7 @@ input[type="submit"]:hover{
 
 .dashboard-section h3 {
   margin-top: 0;
-  color: #333;
+  color: #121111;
   padding: 5px;
 }
 
@@ -242,10 +242,13 @@ input[type="submit"]:hover{
 }
 
 .user-image {
-  display: block;
-  width: 100%;
+  display: flex;
+  width: 98%;
   height: 100px;
-  background: url("src/img/pet1.jpg") no-repeat center center/cover;
+  background:transparent;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
 }
 .flex-container-dashboard{
   display: flex;
@@ -253,11 +256,26 @@ input[type="submit"]:hover{
   align-items: center;
   margin-top: 20px;
 }
+.img-png{
+  height:200px;
+  width:300px;
+  margin-right: 200px;
+}
 .flex-container-dashboard span{
   width:33%;
   display: flex;
   justify-content: center;
 
+
+
+}
+.flex-container-dashboard span select{
+  width:200px;
+  margin:5px;
+  height:30px;
+}
+.txt-dashboard-welcome{
+  margin-left: 100px;
 }
 .search-box{
  display: flex;
@@ -280,7 +298,7 @@ input[type="submit"]:hover{
 
 .petregister-button {
   height:40% !important;
-  width:30% !important;
+  width:60% !important;
   background-color: tomato !important;
   color: white;
   margin: 0;
@@ -291,6 +309,7 @@ input[type="submit"]:hover{
 }
 .txt-dashboard-welcome{
 flex-direction: column;
+color: #f8f8f8;
 }
 .table-container{
   height:58vh;
@@ -303,4 +322,133 @@ flex-direction: column;
   height: 40%;
   border-radius: 20px;
   margin: 10px;
+}
+/*Adopt Page*/
+.container {
+  display: flex;
+  height: 80vh;
+}
+.dashboard-content-register{
+  flex:1;
+  display: flex;
+  justify-content: center;
+  background-color: #f9f9f9;
+  
+  
+}
+.form {
+  background-color: #f9f9f9;
+  padding: 30px;
+  max-width: 700px;
+  width: 100%;
+  margin-top: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.form-left{
+  margin-top: 50px;
+  width: 300px;
+  background-color: #d86234;
+  height:73.7vh;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+
+}
+.row {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.form-group:last-child {
+  margin-right: 0;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+}
+
+input[type="text"],
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.selct-gen{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button[type="submit"] {
+  background-color: #e24f1e;
+  color: white;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+}
+
+button[type="submit"]:hover {
+  background-color: #c9b2b2;
+}
+
+.image-preview {
+  flex: 1;
+  
+}
+
+.upload {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 20px;
+}
+
+
+.preview-image {
+  width: 70%;
+  height: 150px;
+  border-radius: 50%;
+  margin-left: 50px;
+  border: dotted 1px black;
+  margin-left: 50px;
+}
+
+.placeholder {
+  width: 70%;
+  height: 150px;; /* Adjust the height as needed */
+  border: 1px dashed #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  border-radius: 50%;
+  margin-left: 50px;
+}
+/*pet Adoption*/
+.list-container{
+  width:80%;
+  padding: 30px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+.list{
+ width:100%
+}
+.padd{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
 }

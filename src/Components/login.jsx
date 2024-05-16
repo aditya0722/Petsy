@@ -15,12 +15,12 @@ const[result,setResult]=useState("")
     async function submitHandler(e){
         e.preventDefault();
         try{
-            console.log(password);
+           
             axios.post("http://localhost:5000/login",{
                 email,password
             })
             .then(res=>{
-                console.log(res.data.status);
+                
                 let name=res.data.username;
                 if(res.data.status=="exits"){
                     setCookie("username",name,30)

@@ -1,4 +1,5 @@
-const mongose=require("mongoose")
+const mongose=require("mongoose");
+
 
 mongose.connect("mongodb://localhost:27017/petsy")
   .then(() => {
@@ -23,6 +24,47 @@ const newSchema = new mongose.Schema({
   },
 });
 
-const collection = mongose.model("users", newSchema); 
+const registeruser=new mongose.Schema({
+  image:{
+    type:String,
+    required:false,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+  },
+  age: {
+    type: Number,
+    required: true,
+  },
+  color: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type:   Number,
+    required: true,
+  },
+  date: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+  user: {
+    type:String,
+    required: true,
+  },
 
-module.exports = collection;
+})
+const collection = mongose.model("users", newSchema); 
+const petregister=mongose.model("pets",registeruser);
+
+module.exports = {collection,petregister};

@@ -11,6 +11,9 @@ import UserDashboard from './Components/userDashboard';
 import './App.css';
 import Footer from './Components/footer';
 import { logout } from './cookie';
+import AppliedForAddoption from './Components/AppliedForAddoption';
+import PetAdoptionList from './Components/PetAdoptionList';
+import Registerpet from './Components/RegisterPets';
 function App() {
   
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -39,7 +42,10 @@ function App() {
           <Route path='/review' element={<Review/>}></Route>
           <Route path='/contact' element={<Contact/>}></Route>
           <Route path='/About' element={<About/>}></Route>
-          <Route path='/userDashboard' element={<UserDashboard username={username}/>}></Route>
+          <Route path='/userDashboard' element={<UserDashboard username={username} onLogout={handleLogout}/>}></Route>
+          <Route path='/AppliedForAddoption' element={<AppliedForAddoption username={username} onLogout={handleLogout}/>}></Route>
+          <Route path="/Registerpet" element={<Registerpet username={username} onLogout={handleLogout}/>}></Route>
+          <Route path="/PetAdoptionList" element={<PetAdoptionList username={username} onLogout={handleLogout}/>}></Route>
         </Routes>
 
       <Footer/>
