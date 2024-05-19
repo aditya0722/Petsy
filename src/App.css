@@ -311,17 +311,82 @@ input[type="submit"]:hover{
 flex-direction: column;
 color: #f8f8f8;
 }
-.table-container{
-  height:58vh;
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  height: 60vh;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: scroll;
   padding: 10px;
+  flex-wrap: wrap;
 }
-.table-box{
+.table-box {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 40%;
+  height: 30%;
+  width: 90%;
   border-radius: 20px;
   margin: 10px;
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+.table-box img {
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  flex-shrink: 0;
+}
+.pet-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 20px;
+}
+.pet-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-grow: 1;
+}
+.pet-name {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.img-text{
+  display: flex;
+  place-items: center;
+}
+.details-box {
+  margin-bottom: 20px;
+}
+.details-box h4 {
+  margin: 5px 0;
+}
+.status {
+  font-size: 1.2em;
+  color: #ff9800;
+  margin-right: 20px;
+  white-space: nowrap;
+}
+.adopt-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.adopt-btn:hover {
+  background-color: #45a049;
 }
 /*Adopt Page*/
 .container {

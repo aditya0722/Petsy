@@ -1,123 +1,138 @@
-const express = require("express")
-const mongo = require("./mongo")
-const app = express();
-const cors = require("cors")
-const PORT = process.env.PORT || 5000
+const express = require("express");
+const mongo = require("./mongo");
+const cors = require("cors");
 const bcrypt = require("bcryptjs");
-
-const collection = mongo.collection;
-const petregister = mongo.petregister;
 const fs = require("fs");
-const {v4 : uuidv4}= require("uuid");
+const path = require('path');
+const multer = require('multer');
 const bodyParser = require("body-parser");
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+const { User, Pet } = mongo;
+
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(express.static('public'));
+app.use('/uploads', express.static('uploads')); // Serve static files from the uploads folder
 
-// Parse incoming requests with URL-encoded payloads
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+// Configure Multer for file storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Appends the current date to the filename
+  },
+});
 
-app.post("/registerpet", async (req, res) => {
-    let currentDate = new Date();
-    let formattedDate = currentDate.toISOString(); 
-    
-    try {
-        console.log(req.body);
-        const { selectedImage, name, gender, type, age, color, price,username } = req.body;
-        const imageFileName = uuidv4() + ".jpg"; // Example: abc123.jpg
+const upload = multer({ storage: storage });
 
-        // Write the image data to a folder on your server
-        const imagePath = `./public/Images/${imageFileName}`;
-        fs.writeFileSync(imagePath, selectedImage, "base64");
+// Register pet route with Multer middleware
+app.post("/registerpet", upload.single('image'), async (req, res) => {
+  try {
+    const { name, gender, type, age, color, price, username } = req.body;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; // Get the image URL
 
-        const imageUrl = `Images/${imageFileName}`;
-        const data = {
-            image: imageUrl,
-            name: name,
-            gender: gender,
-            type: type,
-            age: age,
-            color: color,
-            price: price,
-            date: formattedDate,
-            user:username
-        }
-        await petregister.insertMany(data);
-        res.json("success")
-    }
-    catch (e) {
-        console.error(e);
-        res.status(500).json({ error: "Internal Server Error" });
+    const user = await User.findOne({ userName: username });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-})
+    const petData = {
+      image: imageUrl,
+      name: name,
+      gender: gender,
+      type: type,
+      age: age,
+      color: color,
+      price: price,
+      user: user._id,
+    };
+    console.log(petData);
 
+    const newPet = new Pet(petData);
+    await newPet.save();
 
+    user.pets.push(newPet._id);
+    await user.save();
+
+    res.json({ status: "success", pet: newPet });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// User dashboard route
+app.get("/userdashboard", async (req, res) => {
+  try {
+    const pets = await Pet.find().populate('user', 'userName');
+    res.json(pets);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Signup route
 app.post("/signup", async (req, res) => {
-    const { useName, email, password } = req.body;
-    const data = {
-        useName: useName,
-        email: email,
-        password: password
+  const { useName, email, password } = req.body;
+  console.log(req.body);
+  try {
+    const existingUser = await User.findOne({ email });
 
+    if (existingUser) {
+      return res.status(409).json({ status: "exists" });
     }
+    console.log(password);
 
-    try {
-        const check = await collection.findOne({ email: email })
 
-        if (check != null) {
-            res.json("exits")
-        }
-        else {
-            await collection.insertMany(data)
-            res.json("not exits")
-        }
+    const newUser = new User({
+      userName: useName,
+      email: email,
+      password: password,
+    });
 
-    }
-    catch (e) {
+    await newUser.save();
+    res.status(201).json({ status: "not exists" });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
-        res.json(e)
-    }
-})
-
+// Login route
 app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    try {
-        const check = await collection.findOne({ email: email })
+  try {
+    const user = await User.findOne({ email });
 
-
-        if (check != null) {
-
-            const passcompaer = await bcrypt.compare(password, check.password)
-            console.log(passcompaer);
-            if (passcompaer === true) {
-                console.log(check.useName);
-                res.json({ status: "exits", username: check.useName })
-
-            }
-            else {
-                res.json("notExits")
-            }
-
-        }
-        else {
-            res.json("notExits")
-        }
+    if (!user) {
+      return res.status(404).json({ status: "not exists" });
     }
-    catch (e) {
-
-        res.json(e)
+    
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log(req.body);
+    console.log(user);
+    console.log(isPasswordValid);
+    if (!isPasswordValid) {
+      return res.status(401).json({ status: "not exists" });
     }
-})
+
+    res.json({ status: "exists", username: user.userName });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 app.listen(PORT, (error) => {
-
-    if (error) {
-        console.log(error);
-    }
-    else {
-        console.log(`server is running on ${PORT}`);
-    }
-})
+  if (error) {
+    console.error(error);
+  } else {
+    console.log(`Server is running on ${PORT}`);
+  }
+});

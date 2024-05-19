@@ -20,9 +20,9 @@ const[result,setResult]=useState("")
                 email,password
             })
             .then(res=>{
-                
+                console.log(res);
                 let name=res.data.username;
-                if(res.data.status=="exits"){
+                if(res.data.status=="exists"){
                     setCookie("username",name,30)
                     setCookie("email",email,30)
                     onLogin(name);
@@ -37,7 +37,10 @@ const[result,setResult]=useState("")
         }
         catch(e){
             console.log(e);
+            setResult("Somethang went Wrong try Again!");
+            
         }
+    
    if(isLoggedIn()){
         onLogin(getCookie("username"));
         history("/userDashboard")
@@ -45,12 +48,12 @@ const[result,setResult]=useState("")
    else{
     submitHandler();
     }
-   }
+}
   
     return (
 
-        <div class="container-login">
-            <form class="login-form" method="post" onSubmit={submitHandler}>
+        <div className="container-login">
+            <form className="login-form" method="post" onSubmit={submitHandler}>
             <br/>
             <center>
                 <h2>Welcome to  <span className="txt-foter-special">Petsy</span> Community</h2>

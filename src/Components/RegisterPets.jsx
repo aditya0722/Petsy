@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FaUser, FaShoppingCart, FaCog, FaSearch, FaCartPlus, FaRegistered, FaRegKiss, FaPenAlt, FaList, FaOutdent } from 'react-icons/fa';
 import axios from "axios";
-import fs from "fs";
 
 export default function Registerpet({ username, onLogout }) {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -13,89 +12,41 @@ export default function Registerpet({ username, onLogout }) {
     const [age, setage] = useState(0);
     const [color, setcolor] = useState("");
     const [price, setprice] = useState(0);
-    const handleImageChange = async (event) => {
+
+    const handleImageChange = (event) => {
         const file = event.target.files[0];
-        const reader = new FileReader();
-    
-        reader.readAsDataURL(file);
-        reader.onload = async () => {
-            // Create an image element
-            const img = new Image();
-            img.src = reader.result;
-    
-            // Once the image is loaded, resize it
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 800;
-                const MAX_HEIGHT = 600;
-                let width = img.width;
-                let height = img.height;
-    
-                if (width > height) {
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                } else {
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                    }
-                }
-    
-                canvas.width = width;
-                canvas.height = height;
-    
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-    
-                // Convert the canvas to base64 encoded image data
-                const compressedImage = canvas.toDataURL('image/jpeg', 0.8);
-    
-                // Log the sizes of original and compressed images
-                console.log('Original image size:', file.size, 'bytes');
-                console.log('Compressed image size:', getImageSize(compressedImage), 'bytes');
-    
-                setSelectedImage(compressedImage);
-            };
-        };
+        setSelectedImage(file);
     };
-    
-    // Function to calculate the size of base64 image data
-    const getImageSize = (base64String) => {
-        // Remove header
-        const base64StringWithoutHeader = base64String.replace(/^data:image\/[a-z]+;base64,/, '');
-        // Calculate size in bytes
-        return Math.ceil(base64StringWithoutHeader.length * 0.75);
-    };
-    
+
     function formSubmitHandller(e) {
         e.preventDefault();
         try {
-            
-            console.log("here");
-            axios.post("http://localhost:5000/registerpet", {
-                selectedImage,
-                name,
-                gender,
-                type,
-                age,
-                color,
-                price,
-                username
-            }).then(res => {
-                if (res.data == "success") {
-                    console.log("Registration Successfull");
+            const formData = new FormData();
+            formData.append("image", selectedImage);
+            formData.append("name", name);
+            formData.append("gender", gender);
+            formData.append("type", type);
+            formData.append("age", age);
+            formData.append("color", color);
+            formData.append("price", price);
+            formData.append("username", username);
+
+            axios.post("http://localhost:5000/registerpet", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
                 }
-                else {
-                    console.log("Somethig went wrong");
+            }).then(res => {
+                if (res.data.status === "success") {
+                    alert("Registration Successful");
+                } else {
+                    alert("Something went wrong");
                 }
             })
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
         }
     }
+
     return (
         <>
             <div className="user-dashboard">
@@ -113,11 +64,11 @@ export default function Registerpet({ username, onLogout }) {
                         <h1>Register Pets Here</h1>
                     </div>
                     <div className="container">
-                        <form className="form"  method="post">
+                        <form className="form" onSubmit={formSubmitHandller}>
                             <div className="row">
                                 <div className="image-preview">
                                     {selectedImage ? (
-                                        <img src={selectedImage} alt="Selected Pet" className="preview-image" />
+                                        <img src={URL.createObjectURL(selectedImage)} alt="Selected Pet" className="preview-image" />
                                     ) : (
                                         <div className="placeholder">Preview</div>
                                     )}
@@ -163,7 +114,7 @@ export default function Registerpet({ username, onLogout }) {
                             </div>
                             <div className="row">
                                 <div className="form-group">
-                                    <input type="submit" value="Submit" onClick={formSubmitHandller}/>
+                                    <button type="submit">Submit</button>
                                 </div>
                             </div>
                         </form>

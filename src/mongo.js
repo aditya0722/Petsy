@@ -1,7 +1,6 @@
-const mongose=require("mongoose");
+const mongoose = require("mongoose");
 
-
-mongose.connect("mongodb://localhost:27017/petsy")
+mongoose.connect("mongodb://localhost:27017/petsy", { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("MongoDB connected");
   })
@@ -9,25 +8,11 @@ mongose.connect("mongodb://localhost:27017/petsy")
     console.error("MongoDB Connection Failed:", err);
   });
 
-const newSchema = new mongose.Schema({
-  email: {
+// Define the schema for registering pets
+const registerPetSchema = new mongoose.Schema({
+  image: {
     type: String,
-    required: true,
-  },
-  password: { 
-    type: String,
-    required: true,
-  },
-  useName: { 
-    type: String,
-    required: true,
-  },
-});
-
-const registeruser=new mongose.Schema({
-  image:{
-    type:String,
-    required:false,
+    required: false,
   },
   name: {
     type: String,
@@ -50,7 +35,7 @@ const registeruser=new mongose.Schema({
     required: true,
   },
   price: {
-    type:   Number,
+    type: Number,
     required: true,
   },
   date: {
@@ -59,12 +44,35 @@ const registeruser=new mongose.Schema({
     default: Date.now,
   },
   user: {
-    type:String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users',
     required: true,
   },
+});
 
-})
-const collection = mongose.model("users", newSchema); 
-const petregister=mongose.model("pets",registeruser);
+// Define the schema for users
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  userName: {
+    type: String,
+    required: true,
+  },
+  pets: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'pets',
+    required: false,
+  }],
+});
 
-module.exports = {collection,petregister};
+// Create models
+const User = mongoose.model("users", userSchema);
+const Pet = mongoose.model("Pets", registerPetSchema);
+
+module.exports = { User, Pet };
