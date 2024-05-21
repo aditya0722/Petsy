@@ -16,7 +16,7 @@ const[result,setResult]=useState("")
        e.preventDefault();
         try{
            
-            axios.post("http://localhost:5000/login",{
+            axios.post("https://petsy-ho9v.vercel.app/login",{
                 email,password
             })
             .then(res=>{

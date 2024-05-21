@@ -31,7 +31,7 @@ export default function Registerpet({ username, onLogout }) {
             formData.append("price", price);
             formData.append("username", username);
 
-            axios.post("http://localhost:5000/registerpet", formData, {
+            axios.post("https://petsy-ho9v.vercel.app/registerpet", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
