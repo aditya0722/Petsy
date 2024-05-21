@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FaUser, FaShoppingCart, FaCog, FaSearch, FaCartPlus, FaRegistered, FaRegKiss, FaPenAlt, FaList, FaOutdent } from 'react-icons/fa';
+import { FaUser, FaShoppingCart,FaHome, FaCog, FaSearch, FaCartPlus,FaDog, FaRegistered, FaRegKiss, FaPenAlt, FaList, FaOutdent } from 'react-icons/fa';
 import axios from "axios";
 
 export default function Registerpet({ username, onLogout }) {
@@ -51,13 +51,14 @@ export default function Registerpet({ username, onLogout }) {
         <>
             <div className="user-dashboard">
                 <div className="sidebar">
-                    <h2>Dashboard</h2>
-                    <ul>
-                        <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register Pets</Link></li>
-                        <li><Link to="/PetAdoptionList"><FaList className="icon" /> pet Adoption List</Link></li>
-                        <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Addoption Applied</Link></li>
-                        <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
-                    </ul>
+                <h2><Link to="/userDashboard"> <FaHome className="icon"/>Dashboard</Link></h2>
+        <ul>
+          <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
+          <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
+          <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
+          <li><Link to="/userAppliedAddoption"><FaDog className="icon"/>User Application for Addoption </Link></li>
+          <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
+        </ul>
                 </div>
                 <div className="dashboard-content-register">
                     <div className="form-left">

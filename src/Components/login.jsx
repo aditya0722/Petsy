@@ -13,7 +13,7 @@ const[email,setEmal]=useState("")
 const[result,setResult]=useState("")
     //when submitting the value
     async function submitHandler(e){
-        e.preventDefault();
+       e.preventDefault();
         try{
            
             axios.post("http://localhost:5000/login",{

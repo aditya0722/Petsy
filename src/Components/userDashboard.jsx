@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
-import { FaUser, FaSearch, FaCartPlus, FaPenAlt, FaList, FaOutdent } from 'react-icons/fa';
+import { FaUser, FaSearch, FaCartPlus, FaPenAlt, FaList, FaOutdent, FaDog, FaHome } from 'react-icons/fa';
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -21,15 +21,40 @@ export default function UserDashboard({ username, onLogout }) {
 
     fetchData();
   }, []);
+  function clickHandler(pet){
+   let id=pet._id
+    
+      axios.post("http://localhost:5000/adoptpet",{
+          id,username
+      }).then(res=>{
+        alert("Success Plese wait for the owner to approve")
+      }).catch((e)=>{
+        
+       let error=e.response.data.status
+        console.log(error);
+        if(error==="already adoption"){
+          alert('you have alredy Adopted this pet')
+        }
+        else if(error==='pet not found'){
+          alert('pet not found')
+        }
+        else{
+          alert('Internal Server Error')
+        }
+      
+      })
+    
+  }
 
   return (
     <div className="user-dashboard">
       <div className="sidebar">
-        <h2>Dashboard</h2>
+        <h2><Link to="/userDashboard"> <FaHome className="icon"/>Dashboard</Link></h2>
         <ul>
-          <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register Pets</Link></li>
-          <li><Link to="/PetAdoptionList"><FaList className="icon" /> pet Adoption List</Link></li>
-          <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Addoption Applied</Link></li>
+          <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
+          <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
+          <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
+          <li><Link to="/userAppliedAddoption"><FaDog className="icon"/>User Application for Addoption </Link></li>
           <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
         </ul>
       </div>
@@ -95,14 +120,15 @@ export default function UserDashboard({ username, onLogout }) {
                   </span>
 
                   <span>
-                    <h4>Status:Pending</h4>
+                    <h4>Status: {item.status}</h4>
                   </span>
                   <span>
-                    <button type="submit">Addopt</button>
+                  <button type="submit" onClick={() => clickHandler(item)}>Adopt</button>
+
                   </span>
 
                 </div>
-                {/* Additional status and buttons */}
+                
               </div>
             </div>
           ))}

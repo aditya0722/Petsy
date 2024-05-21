@@ -14,6 +14,7 @@ import { logout } from './cookie';
 import AppliedForAddoption from './Components/AppliedForAddoption';
 import PetAdoptionList from './Components/PetAdoptionList';
 import Registerpet from './Components/RegisterPets';
+import UserAppliedAddoption from './Components/userAppliedAddoption';
 function App() {
   
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -46,6 +47,7 @@ function App() {
           <Route path='/AppliedForAddoption' element={<AppliedForAddoption username={username} onLogout={handleLogout}/>}></Route>
           <Route path="/Registerpet" element={<Registerpet username={username} onLogout={handleLogout}/>}></Route>
           <Route path="/PetAdoptionList" element={<PetAdoptionList username={username} onLogout={handleLogout}/>}></Route>
+          <Route path="/userAppliedAddoption" element={<UserAppliedAddoption username={username} onLogout={handleLogout}/>}></Route>
         </Routes>
 
       <Footer/>
