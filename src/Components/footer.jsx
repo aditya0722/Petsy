@@ -9,7 +9,7 @@ export default function(){
             <br/>
             <br/>
             <center>
-            <div className="container">
+            <div className="container-footer">
                 
                 <div className="boxs"></div>
                 <div className="boxs"></div>

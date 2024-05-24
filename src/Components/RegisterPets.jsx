@@ -1,8 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FaUser, FaShoppingCart,FaHome, FaCog, FaSearch, FaCartPlus,FaDog, FaRegistered, FaRegKiss, FaPenAlt, FaList, FaOutdent } from 'react-icons/fa';
+import { FaSliders } from "react-icons/fa6";
+import { FaUser, FaCheckCircle, FaTimesCircle, FaShoppingCart, FaHome, FaCog, FaSearch, FaCartPlus, FaDog, FaRegistered, FaRegKiss, FaPenAlt, FaList, FaOutdent } from 'react-icons/fa';
 import axios from "axios";
+import { confirmAlert } from "react-confirm-alert";
+import { BiExit } from "react-icons/bi";
 
 export default function Registerpet({ username, onLogout }) {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -12,7 +15,7 @@ export default function Registerpet({ username, onLogout }) {
     const [age, setage] = useState(0);
     const [color, setcolor] = useState("");
     const [price, setprice] = useState(0);
-
+    const [togBLock, settogBLock] = useState("sidebar");
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         setSelectedImage(file);
@@ -20,51 +23,133 @@ export default function Registerpet({ username, onLogout }) {
 
     function formSubmitHandller(e) {
         e.preventDefault();
-        try {
-            const formData = new FormData();
-            formData.append("image", selectedImage);
-            formData.append("name", name);
-            formData.append("gender", gender);
-            formData.append("type", type);
-            formData.append("age", age);
-            formData.append("color", color);
-            formData.append("price", price);
-            formData.append("username", username);
+        const formData = new FormData();
+        formData.append("image", selectedImage);
+        formData.append("name", name);
+        formData.append("gender", gender);
+        formData.append("type", type);
+        formData.append("age", age);
+        formData.append("color", color);
+        formData.append("price", price);
+        formData.append("username", username);
 
-            axios.post("https://petsy-ho9v.vercel.app/registerpet", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            }).then(res => {
-                if (res.data.status === "success") {
-                    alert("Registration Successful");
-                } else {
-                    alert("Something went wrong");
-                }
-            })
-        } catch (e) {
-            console.log(e);
-        }
+        axios.post("http://localhost:5000/registerpet", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }).then(res => {
+            if (res.data.status === "success") {
+                confirmAlert({
+                    customUI: ({ onClose }) => {
+                        return (
+                            <div className='custom-ui success'>
+                                <br />
+                                <FaCheckCircle className="icon success-icon" />
+                                <br />
+                                <h1>Success!</h1>
+                                <br />
+                                <p>Pet Registration Successful</p>
+                                <br />
+                                <button onClick={onClose} className="confirm-button">OK</button>
+                            </div>
+                        );
+                    }
+                });
+            } else {
+                confirmAlert({
+                    customUI: ({ onClose }) => {
+                        return (
+                            <div className='custom-ui error'>
+                                <br />
+                                <FaTimesCircle className="icon error-icon" />
+                                <br />
+                                <h1>Error</h1>
+                                <br />
+                                <p>Something went wrong. Please try again.</p>
+                                <br />
+                                <button onClick={onClose} className="confirm-button">OK</button>
+                            </div>
+                        );
+                    }
+                });
+            }
+        }).catch(e => {
+            if (e.response.data.error === "Details Incomplete") {
+                confirmAlert({
+                    customUI: ({ onClose }) => {
+                        return (
+                            <div className='custom-ui error'>
+                                <br />
+                                <FaTimesCircle className="icon error-icon" />
+                                <br />
+                                <h1>Error</h1>
+                                <br />
+                                <p>Please Fill Complete Form.</p>
+                                <br />
+                                <button onClick={onClose} className="confirm-button">OK</button>
+                            </div>
+                        );
+                    }
+                });
+            }
+            else {
+
+
+
+                confirmAlert({
+                    customUI: ({ onClose }) => {
+                        return (
+                            <div className='custom-ui error'>
+                                <br />
+                                <FaTimesCircle className="icon error-icon" />
+                                <br />
+                                <h1>Error</h1>
+                                <br />
+                                <p>Something went wrong. Please try again.</p>
+                                <br />
+                                <button onClick={onClose} className="confirm-button">OK</button>
+                            </div>
+                        );
+                    }
+                });
+            }
+        })
+
     }
 
     return (
         <>
             <div className="user-dashboard">
-                <div className="sidebar">
-                <h2><Link to="/userDashboard"> <FaHome className="icon"/>Dashboard</Link></h2>
-        <ul>
-          <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
-          <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
-          <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
-          <li><Link to="/userAppliedAddoption"><FaDog className="icon"/>User Application for Addoption </Link></li>
-          <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
-        </ul>
+                <div className={togBLock}>
+                    <h2><Link to="/userDashboard"> <FaHome className="icon" /><span>Dashboard </span></Link><BiExit className="exit-nav" onClick={() => {
+                        if (togBLock === "sidebar-block") {
+                            settogBLock("sidebar");
+                        }
+                        else {
+                            settogBLock("sidebar-block");
+                        }
+                    }} />
+                    </h2>
+                    <ul>
+                        <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
+                        <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
+                        <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
+                        <li><Link to="/userAppliedAddoption"><FaDog className="icon" />User Application for Addoption </Link></li>
+                        <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
+                    </ul>
                 </div>
                 <div className="dashboard-content-register">
-                    <div className="form-left">
-                        <h1>Register Pets Here</h1>
-                    </div>
+<h1><FaSliders className="sliders-button" onClick={() => {
+              if (togBLock === "sidebar") {
+                settogBLock("sidebar-block");
+              }
+              else {
+                settogBLock("sidebar");
+              }
+              
+            }} /></h1>
                     <div className="container">
+                    
                         <form className="form" onSubmit={formSubmitHandller}>
                             <div className="row">
                                 <div className="image-preview">
@@ -115,7 +200,9 @@ export default function Registerpet({ username, onLogout }) {
                             </div>
                             <div className="row">
                                 <div className="form-group">
-                                    <button type="submit">Submit</button>
+                                    <center>
+                                        <button type="submit">Submit</button>
+                                    </center>
                                 </div>
                             </div>
                         </form>

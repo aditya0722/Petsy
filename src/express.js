@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require('path');
 const multer = require('multer');
 const bodyParser = require("body-parser");
+const { error } = require("console");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -39,6 +40,9 @@ app.post("/registerpet", upload.single('image'), async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    if(imageUrl===null||name===""||gender===""||type===""||age=="0"||color===""||price=="0"||username===""){
+      return res.status(500).json({error:"Details Incomplete"})
+    }
 
     const petData = {
       image: imageUrl,
@@ -50,7 +54,6 @@ app.post("/registerpet", upload.single('image'), async (req, res) => {
       price: price,
       user: user._id,
     };
-    console.log(petData);
 
     const newPet = new Pet(petData);
     await newPet.save();
@@ -79,14 +82,12 @@ app.get("/userdashboard", async (req, res) => {
 // Signup route
 app.post("/signup", async (req, res) => {
   const { useName, email, password } = req.body;
-  console.log(req.body);
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email,useName });
 
     if (existingUser) {
       return res.status(409).json({ status: "exists" });
     }
-    console.log(password);
 
 
     const newUser = new User({
@@ -279,7 +280,6 @@ app.get("/getadoptionlist", async (req, res) => {
 
 app.post("/deleteselling", async (req, res) => {
   const { username, id } = req.body;
-  console.log(req.body);
   try {
     // Find the user by username
     const user = await User.findOne({ userName: username });
@@ -288,8 +288,8 @@ app.post("/deleteselling", async (req, res) => {
     }
 
     // Filter the pets array based on the provided ID
-    user.pets = user.pets.filter(petId => !petId.equals(id));
-
+    user.pets =await user.pets.filter(petId => !petId.equals(id));
+    await Pet.findByIdAndDelete(id)
     // Save the updated user
     await user.save();
 
@@ -301,7 +301,29 @@ app.post("/deleteselling", async (req, res) => {
     res.status(500).json({ status: "Internal Server Error" });
   }
 });
+//pet Adopting Disapprove Route
+app.post("/updateAdoptionDis",async(req,res)=>{
+  const{item}=req.body;
+  try{
 
+  
+  const pet= await Pet.findById(item._id)
+  const id=pet._id;
+  pet.updateOne(pet.map(item=>{
+    if(item._id==id){
+      item.status="disapprove";
+    }
+    
+  }))
+  await pet.save();
+  res.status(200).json({status:"success"});
+}
+catch(e){
+  console.log(e);
+  res.status(500).json({status:"error"});
+}
+
+})
 // Login route
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;

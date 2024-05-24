@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
-import { FaUser, FaSearch, FaCartPlus, FaPenAlt, FaList, FaOutdent, FaDog, FaHome } from 'react-icons/fa';
+import { FaUser, FaCheckCircle, FaSearch, FaCartPlus, FaPenAlt, FaList, FaOutdent, FaDog, FaHome, FaExclamation, FaToggleOn } from 'react-icons/fa';
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import { confirmAlert } from "react-confirm-alert";
+import { FaSliders } from "react-icons/fa6";
+import { BiExit } from "react-icons/bi";
 export default function UserDashboard({ username, onLogout }) {
   const [data, setData] = useState([]);
-
+  const [togBLock, settogBLock] = useState("sidebar");
   useEffect(() => {
     // Use an async function inside useEffect to handle the axios call
     const fetchData = async () => {
@@ -21,46 +23,126 @@ export default function UserDashboard({ username, onLogout }) {
 
     fetchData();
   }, []);
-  function clickHandler(pet){
-   let id=pet._id
-    
-      axios.post("http://localhost:5000/adoptpet",{
-          id,username
-      }).then(res=>{
-        alert("Success Plese wait for the owner to approve")
-      }).catch((e)=>{
-        
-       let error=e.response.data.status
-        console.log(error);
-        if(error==="already adoption"){
-          alert('you have alredy Adopted this pet')
+  function clickHandler(pet) {
+    let id = pet._id
+
+    axios.post("http://localhost:5000/adoptpet", {
+      id, username
+    }).then(res => {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <div className='custom-ui success'>
+              <br />
+              <FaCheckCircle className="icon success-icon" />
+              <br />
+              <h1>Success!</h1>
+              <br />
+              <p>Please wait for the Owner to Approve</p>
+              <br />
+              <button onClick={onClose} className="confirm-button">OK</button>
+            </div>
+          );
         }
-        else if(error==='pet not found'){
-          alert('pet not found')
-        }
-        else{
-          alert('Internal Server Error')
-        }
-      
-      })
-    
+      });
+    }).catch((e) => {
+
+      let error = e.response.data.status
+      console.log(error);
+      if (error === "already adoption") {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <div className='custom-ui warning'>
+                <br />
+                <FaExclamation className="icon warning-icon" />
+                <br />
+                <h1>Warning</h1>
+                <br />
+                <p>You've already Applied for Addoption</p>
+                <br />
+                <button onClick={onClose} className="confirm-button orange">OK</button>
+              </div>
+            );
+          }
+        });
+      }
+      else if (error === 'pet not found') {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <div className='custom-ui error'>
+                <br />
+                <FaTimesCircle className="icon error-icon" />
+                <br />
+                <h1>Error</h1>
+                <br />
+                <p>Pet Not Found!</p>
+                <br />
+                <button onClick={onClose} className="confirm-button">OK</button>
+              </div>
+            );
+          }
+        });
+      }
+      else {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <div className='custom-ui error'>
+                <br />
+                <FaTimesCircle className="icon error-icon" />
+                <br />
+                <h1>Error</h1>
+                <br />
+                <p>Something went wrong. Please try again.</p>
+                <br />
+                <button onClick={onClose} className="confirm-button">OK</button>
+              </div>
+            );
+          }
+        });
+      }
+
+    })
+
   }
 
   return (
     <div className="user-dashboard">
-      <div className="sidebar">
-        <h2><Link to="/userDashboard"> <FaHome className="icon"/>Dashboard</Link></h2>
-        <ul>
-          <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
-          <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
-          <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
-          <li><Link to="/userAppliedAddoption"><FaDog className="icon"/>User Application for Addoption </Link></li>
-          <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
-        </ul>
+      <div className={togBLock}>
+       
+          <h2><Link to="/userDashboard"> <FaHome className="icon" /><span>Dashboard </span></Link><BiExit className="exit-nav" onClick={() => {
+            if (togBLock === "sidebar-block") {
+              settogBLock("sidebar");
+            }
+            else {
+              settogBLock("sidebar-block");
+            }
+           
+
+          }} />
+           
+          </h2>
+          <ul>
+            <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
+            <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
+            <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
+            <li><Link to="/userAppliedAddoption"><FaDog className="icon" />User Application for Addoption </Link></li>
+            <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
+          </ul>
       </div>
       <div className="dashboard-content">
         <div className="dashboard-section">
           <div className="user-image">
+            <FaSliders className="sliders-button" onClick={() => {
+              if (togBLock === "sidebar") {
+                settogBLock("sidebar-block");
+              }
+              else {
+                settogBLock("sidebar");
+              }
+            }} />
             <span className="txt-dashboard-welcome">
               <h3>Welcome, <FaUser />{username}!</h3>
               <p>This is your user dashboard.</p>
@@ -104,9 +186,11 @@ export default function UserDashboard({ username, onLogout }) {
                 <div className="pet-details">
                   <span className="img-text">
                     <img src={item.image} alt={item.name} />
+                    <br/>
                     <span className="pet-name">&nbsp;{item.name}</span>
                   </span>
                   <span>
+                    <br/>
                     <h4>Type: {item.type}</h4>
                     <h4>Gender: {item.gender}</h4>
                     <h4>Age: {item.age}</h4>
@@ -116,19 +200,21 @@ export default function UserDashboard({ username, onLogout }) {
                     <h4>Price: {item.price}</h4>
                     <br />
                     <br />
-                    <h5>Date: {item.date}</h5>
+                    <h5>Date: {new Date(item.date).toLocaleDateString()}</h5>
                   </span>
 
                   <span>
                     <h4>Status: {item.status}</h4>
                   </span>
                   <span>
-                  <button type="submit" onClick={() => clickHandler(item)}>Adopt</button>
+                    <br/>
+                    <br/>
+                    <button type="submit" onClick={() => clickHandler(item)}>Adopt</button>
 
                   </span>
 
                 </div>
-                
+
               </div>
             </div>
           ))}

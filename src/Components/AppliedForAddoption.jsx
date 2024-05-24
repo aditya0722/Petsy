@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FaUser, FaShoppingCart, FaCog,FaHome, FaSearch, FaDog,FaCartPlus, FaRegistered, FaRegKiss, FaPenAlt, FaList, FaOutdent } from 'react-icons/fa';
+import { FaUser, FaShoppingCart, FaCheckCircle, FaTimesCircle, FaCog, FaHome, FaSearch, FaDog, FaCartPlus, FaRegistered, FaRegKiss, FaPenAlt, FaList, FaOutdent } from 'react-icons/fa';
 import axios from "axios";
+import { confirmAlert } from "react-confirm-alert";
+import { FaSliders } from "react-icons/fa6";
+import { BiExit } from "react-icons/bi";
 
 export default function AppliedForAddoption({ username, onLogout }) {
     const [data, setdata] = useState([])
+    const [togBLock, settogBLock] = useState("sidebar");
     const user = username
     useEffect(() => {
         const getdata = async () => {
@@ -29,10 +33,42 @@ export default function AppliedForAddoption({ username, onLogout }) {
         }).then(req => {
             if (req.data.status == "success") {
                 //alert('item Deleted')
+
+                confirmAlert({
+                    customUI: ({ onClose }) => {
+                        return (
+                            <div className='custom-ui success'>
+                                <br />
+                                <FaCheckCircle className="icon success-icon" />
+                                <br />
+                                <h1>Success!</h1>
+                                <br />
+                                <p>Please wait for the Owner to Approve</p>
+                                <br />
+                                <button onClick={onClose} className="confirm-button orange">OK</button>
+                            </div>
+                        );
+                    }
+                });
                 setdata(data.filter(pet => pet._id !== id));
             }
         }).catch(e => {
-            console.log(e);
+            confirmAlert({
+                customUI: ({ onClose }) => {
+                    return (
+                        <div className='custom-ui error'>
+                            <br />
+                            <FaTimesCircle className="icon error-icon" />
+                            <br />
+                            <h1>Error</h1>
+                            <br />
+                            <p>Something went wrong. Please try again.</p>
+                            <br />
+                            <button onClick={onClose} className="confirm-button">OK</button>
+                        </div>
+                    );
+                }
+            });
         })
 
     }
@@ -40,19 +76,37 @@ export default function AppliedForAddoption({ username, onLogout }) {
 
         <>
             <div className="user-dashboard">
-                <div className="sidebar">
-                <h2><Link to="/userDashboard"> <FaHome className="icon"/>Dashboard</Link></h2>
-        <ul>
-          <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
-          <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
-          <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
-          <li><Link to="/userAppliedAddoption"><FaDog className="icon"/>User Application for Addoption </Link></li>
-          <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
-        </ul>
+                <div className={togBLock}>
+                <h2><Link to="/userDashboard"> <FaHome className="icon" /><span>Dashboard </span></Link><BiExit className="exit-nav" onClick={() => {
+            if (togBLock === "sidebar-block") {
+              settogBLock("sidebar");
+            }
+            else {
+              settogBLock("sidebar-block");
+            }
+           
+
+          }} />
+           
+          </h2>
+                    <ul>
+                        <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
+                        <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
+                        <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
+                        <li><Link to="/userAppliedAddoption"><FaDog className="icon" />User Application for Addoption </Link></li>
+                        <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
+                    </ul>
                 </div>
                 <div className="list-container">
                     <div className="list">
-                    <h1>Check out Your Application for Addoption</h1>
+                        <h1><FaSliders className="sliders-button" onClick={() => {
+                            if (togBLock === "sidebar") {
+                                settogBLock("sidebar-block");
+                            }
+                            else {
+                                settogBLock("sidebar");
+                            }
+                        }} /> &nbsp;Check out Your Application for Addoption</h1>
                         <div className="flex-container-dashboard padd">
                             <span className="search-box">
                                 <input type="search" placeholder="seacrh" />
@@ -100,13 +154,14 @@ export default function AppliedForAddoption({ username, onLogout }) {
                                                 <h4>Price: {item.price}</h4>
                                                 <br />
                                                 <br />
-                                                <h5>Date: {item.date}</h5>
+                                                <h5>Date: {new Date(item.date).toLocaleDateString()}</h5>
                                             </span>
 
                                             <span>
                                                 <h4>Status: {item.status}</h4>
                                             </span>
                                             <span>
+                                                <br />
                                                 <button type="submit" onClick={() => clickHandler(item)}>Cancel Adopt</button>
 
                                             </span>

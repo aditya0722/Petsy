@@ -1,10 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { FaPenAlt, FaList,FaHome, FaCartPlus, FaOutdent, FaSearch,FaDog } from 'react-icons/fa';
+import UserPop from "../popups/user";
+import { confirmAlert } from "react-confirm-alert";
+import { FaPenAlt, FaList, FaHome, FaCartPlus, FaOutdent, FaSearch, FaDog } from 'react-icons/fa';
+import { RxExit, RxPerson } from "react-icons/rx";
 
 export default function UserAppliedAdoption({ username, onLogout }) {
     const [data, setData] = useState({ pets: [], appliedUsers: [] });
+    const [selectedUser, setSelectedUser] = useState(null);
+    function userPop(item){
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <div className='userdata success'>
+                       <div className="user-header">
+                        <span><h3><RxPerson/>{username}</h3></span>
+                        <RxExit onClick={onClose} className="confirm-button orange"/>
+                       
+                        </div> 
+                    </div>
+                );
+            }
+        });
+    }
+
 
     useEffect(() => {
         axios.get("http://localhost:5000/userAppliedAdoption", {
@@ -17,29 +37,31 @@ export default function UserAppliedAdoption({ username, onLogout }) {
         });
     }, [username]);
 
+
+
     return (
         <>
             <div className="user-dashboard">
                 <div className="sidebar">
-                <h2><Link to="/userDashboard"> <FaHome className="icon"/>Dashboard</Link></h2>
-        <ul>
-          <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
-          <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
-          <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
-          <li><Link to="/userAppliedAddoption"><FaDog className="icon"/>User Application for Addoption </Link></li>
-          <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
-        </ul>
+                    <h2><Link to="/userDashboard"> <FaHome className="icon" />Dashboard</Link></h2>
+                    <ul>
+                        <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
+                        <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
+                        <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
+                        <li><Link to="/userAppliedAddoption"><FaDog className="icon" />User Application for Addoption </Link></li>
+                        <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
+                    </ul>
                 </div>
-                
+
                 <div className="list-container">
-                   
                     <div className="list">
-                    <h1>Check out who wants to Addopt your Pets</h1>
+                        <h1>Check out who wants to Adopt your Pets</h1>
                         <div className="flex-container-dashboard padd">
                             <span className="search-box">
-                                <input type="search" placeholder="search" />
+                                <input type="search" placeholder="seacrh" />
                                 <FaSearch className="icon" />
                             </span>
+
                             <span>
                                 <select className="filter-dropdown">
                                     <option value="filter1">Filter 1</option>
@@ -62,48 +84,57 @@ export default function UserAppliedAdoption({ username, onLogout }) {
                             </span>
                         </div>
                         <div className="table-container">
-                            {data.pets.map((pet) => (
-                                <div key={pet._id} className="table-box">
-                                    <img src={pet.image} alt={pet.name} className="pet-image" />
-                                    <div className="pet-info">
-                                        
-                                        <span>
-                                            <h3>{pet.name}</h3>
-                                            <p>Type: {pet.type}</p>
-                                            <p>Gender: {pet.gender}</p>
-                                            <p>Age: {pet.age}</p>
-                                        
-                                            <p>Color: {pet.color}</p>
-                                            <p>Price: {pet.price}</p>
-                                            
-                                            <p>Date: {new Date(pet.date).toLocaleDateString()}</p>
+                            {data.appliedUsers.length > 0 ? (
+                                data.pets.map((pet) => (
+                                    <div key={pet._id} className="table-box">
+                                        <span className="img-text">
+                                            <img src={pet.image} alt={pet.name} />
+
+                                            <h2><b>  &nbsp;&nbsp;&nbsp;{pet.name}</b></h2>
                                         </span>
-                                     
-                                        <div className="applicants">
-                                            <h4>Applicants:</h4>
-                                            {pet.applicants.length > 0 ? (
-                                                pet.applicants.map((applicant) => (
-                                                    <div key={applicant.userId} className="applicant-info">
-                                                        <p>User: {applicant.userName}</p>
-                                                        <p>Applied Date: {new Date(applicant.appliedDate).toLocaleDateString()}</p>
-                                                        <br/>
-                                                        <button className="user-button">View User</button>
-                                                    </div>
-                                                ))
-                                            ) : (
-                                                <p>No applicants yet.</p>
-                                            )}
+
+                                        <div className="pet-info">
+                                            <span></span>
+                                            <span className="tex-align-center">
+
+                                                <br />
+                                                <p><b>Type:</b> {pet.type}</p>
+                                                <p><b>Gender:</b> {pet.gender}</p>
+                                                <p><b>Age:</b> {pet.age}</p>
+                                                <p><b>Color:</b> {pet.color}</p>
+                                                <br />
+
+                                                <h3><b>Price:</b> {pet.price}</h3>
+
+                                                <br />
+                                                <p><b>Date:</b> {new Date(pet.date).toLocaleDateString()}</p>
+                                            </span>
+
+                                            <div className="applicants">
+                                                <h4>Applicants:</h4>
+                                                <br />
+                                                {pet.applicants.length > 0 ? (
+
+
+                                                    <button className="user-button" onClick={() => userPop(pet)}>View User</button>
+
+
+                                                ) : (
+                                                    <p>No applicants yet.</p>
+                                                )}
+                                            </div>
+
+                                            <span>
+                                                <p>Status: {pet.status}</p>
+
+                                            </span>
+
                                         </div>
-                                        <span>
-                                        <p>Status: {pet.status}</p>
-                                        </span>
-                                        <span>
-                                            <button className="btn-login">Disapprove</button>
-                                            <button className="btn-signup">Approve</button>
-                                        </span>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            ) : (
+                                <h1>No applicants yet.</h1>
+                            )}
                         </div>
                     </div>
                 </div>

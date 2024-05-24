@@ -1,0 +1,6 @@
+mongodb+srv://sharmaaaditya167:oT4SzT9CZTkvhtYa@users.lofs8gm.mongodb.net/users?retryWrites=true&w=majority
+
+
+ssl: true, // Ensure SSL is enabled
+  tlsAllowInvalidCertificates: false, // Set to false for production
+  tlsAllowInvalidHostnames: false, // Set to false for production

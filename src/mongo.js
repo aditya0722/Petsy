@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb+srv://sharmaaaditya167:oT4SzT9CZTkvhtYa@users.lofs8gm.mongodb.net/users?retryWrites=true&w=majority", {
+mongoose.connect("mongodb://localhost:27017/petsy", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  ssl: true, // Ensure SSL is enabled
-  tlsAllowInvalidCertificates: false, // Set to false for production
-  tlsAllowInvalidHostnames: false, // Set to false for production
+  
 })
   .then(() => {
     console.log("MongoDB connected");
