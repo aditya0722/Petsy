@@ -28,7 +28,6 @@ const NavigationBar = ({isAuthenticated,username,onLogout}) => {
         <li><Link to="/">Home</Link></li>
         <li><Link to="/about">About us</Link></li>
         <li><Link to="/contact">Contact us</Link></li>
-        <li><Link to="/review">Review</Link></li>
       </ul>
       </span>
      {isAuthenticated?(

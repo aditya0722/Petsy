@@ -7,7 +7,7 @@ export default function about() {
             <section className="Home-container">
                 <div className="about">
                     <div className="img-home">
-                        <div className="img-box">
+                        <div className="img-box2">
                             <img src={img} height="100%" width="100%"/>
                         </div>
                     </div>

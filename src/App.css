@@ -900,7 +900,10 @@ button[type="submit"]:hover {
   height: 70%;
   width: 30%;
 }
-
+.img-home-contact {
+  height: 70%;
+  width: 30%;
+}
 .img-box {
   height: 100%;
   width: 100%;
@@ -929,7 +932,11 @@ button[type="submit"]:hover {
   height: 400px;
   width: 400px;
 }
-
+.img-box2 {
+  background-color: #666;
+  height: 400px;
+  width: 400px;
+}
 .about {
   background-color: #fff;
   display: flex;
@@ -948,30 +955,37 @@ button[type="submit"]:hover {
   }
 
   .img-home {
-    height: 60%;
+    height: 70%;
     width: 90%;
+    display: flex;
+    justify-content: center;
   }
-
+  .img-home-contact {
+    display: none;
+  }
+.img-box2{
+  background-color: #000000;
+}
   .home-txt {
-    width: 63%;
-    height: 40vh;
+    width: 50%;
+    height: 20vh;
   }  
   .about{
     flex-direction: column;
     justify-content: space-between;   
   }
   .home-txt{
-    display: grid;
-    place-items: center;
+    text-align: center;
+    width:90vw;
 
   }.img-box img{
   height:90%;
   width: 90%;    
   }
-  .img-box{
-    background-color: #fff;
-  }
-
+.home-txt-contact{
+  margin: 10px;
+  width:85vw;
+}
 
 }
 
@@ -980,14 +994,17 @@ button[type="submit"]:hover {
     display: flex;
     height: auto;
     flex-direction: column;
-    height: 25vh;
+    height: 32vh;
   }
-
+  nav ul li {
+    margin: 10px;
+  }
   nav span {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 90%;
+    width: 100%;
+  
   }
 
   nav span h2 {
@@ -1004,9 +1021,6 @@ button[type="submit"]:hover {
     display: block;
   }
 
-  .buttons {
-    display: none;
-  }
 
   .p-text,
   .other-text {
@@ -1018,7 +1032,7 @@ button[type="submit"]:hover {
   }
 
   .buttons {
-    display: none;
+    display: block;
   }
 
   .log-out {
