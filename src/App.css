@@ -1,11 +1,11 @@
 
-    nav {
+  nav {
   height: 15vh;
   background-color: rgb(239, 121, 100);
   color: white;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  display: gird;
+  grid-template-rows: 1fr 1fr 1fr;
+  place-items:center;
 
 }
 
@@ -951,7 +951,7 @@ button[type="submit"]:hover {
 @media only screen and (max-width:800px) {
   .home {
     flex-direction: column-reverse;
-    height: 95vh;
+    height: 80vh;
     justify-content: center;
   }
 
@@ -993,9 +993,9 @@ button[type="submit"]:hover {
 @media only screen and (max-width:800px) {
   nav {
     display: flex;
-    height: auto;
     flex-direction: column;
-    height: 20vh;
+    height: 26vh;
+    row-gap: 10px;
   }
   nav ul li {
     margin: 10px;
