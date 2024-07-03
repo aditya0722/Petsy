@@ -1,5 +1,5 @@
 nav{
-  height: 10vh;
+  height: 15vh;
   background-color: rgb(239, 121, 100);
   color: white;
   display: flex;
@@ -772,11 +772,81 @@ button[type="submit"]:hover {
   }
   
 }
+.home-container{
+  height:90vh;
+  width:100vw;
+  background-color: whitesmoke;
+  
+}
+.home{
+  background-color: #eeba89;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+}
+.txt-home{
+font-size: 40px;
+font-family: 'Times New Roman', Times, serif;
+font-weight:bold;
+}
+.home-txt{
+width:50%;
+height: 20vh;
+}
+.txt-white{
+  color:white;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 100;
+}
+.img-home{
+height: 70%;
+width: 30%;
+}
+.img-box{
+  height:100%;
+  width:100%;
+  background-color: #a77028;
+  border-radius: 82% 18% 71% 29% / 29% 29% 71% 71% ;
+}
+.btn-buy-sell {
+  background-color: #7d3c11;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-buy-sell:hover {
+  background-color: #7a5512; /* Darker shade of green on hover */
+}
+@media only screen and (max-width:800px){ 
+  .home{
+    flex-direction: column-reverse;
+    height: 95vh;
+  }
+  .img-home{
+    height: 60%;
+    width: 90%;
+  }
+  .home-txt {
+    width: 63%;
+    height: 40vh;
+}
+
+
+}
 @media only screen and (max-width:800px){ 
   nav{
     display: flex;
     height: auto;
     flex-direction: column;
+    height: 25vh;
   }
   nav span{
     display: flex;
