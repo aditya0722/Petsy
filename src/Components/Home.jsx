@@ -13,7 +13,7 @@ function Home({ onLogin }) {
 
   return (
     <>
-     <section className="Home-container">
+     <section className="home-container">
         <div className="home">
             <div className="home-txt">
                 <h1><span className="txt-home">Wanted to Sell/Buy pet?</span></h1>

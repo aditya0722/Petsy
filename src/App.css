@@ -952,6 +952,7 @@ button[type="submit"]:hover {
   .home {
     flex-direction: column-reverse;
     height: 95vh;
+    justify-content: center;
   }
 
   .img-home {
@@ -994,7 +995,7 @@ button[type="submit"]:hover {
     display: flex;
     height: auto;
     flex-direction: column;
-    height: 32vh;
+    height: 20vh;
   }
   nav ul li {
     margin: 10px;
