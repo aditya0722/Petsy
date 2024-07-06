@@ -1,6 +1,8 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
-
-mongoose.connect("mongodb+srv://sharmaaaditya167:oT4SzT9CZTkvhtYa@users.lofs8gm.mongodb.net/users?retryWrites=true&w=majority", {
+const mongoUrl=process.env.MDB_Connection;
+console.log(mongoUrl);
+mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   ssl: true, // Ensure SSL is enabled
