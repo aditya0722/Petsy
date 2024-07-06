@@ -14,7 +14,7 @@ export default function AppliedForAddoption({ username, onLogout }) {
     useEffect(() => {
         const getdata = async () => {
             console.log(user);
-            axios.get("http://localhost:5000/addoptionapplied", {
+            axios.get("https://petsy-34xa.onrender.com/addoptionapplied", {
                 params: { username }
             }).then(res => {
                 console.log(res.data);
@@ -28,7 +28,7 @@ export default function AppliedForAddoption({ username, onLogout }) {
     }, [username])
     const clickHandler = (item) => {
         const id = item._id;
-        axios.post("http://localhost:5000/deleteaddoption", {
+        axios.post("https://petsy-34xa.onrender.com/deleteaddoption", {
             id, username
         }).then(req => {
             if (req.data.status == "success") {

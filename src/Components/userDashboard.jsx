@@ -13,7 +13,7 @@ export default function UserDashboard({ username, onLogout }) {
     // Use an async function inside useEffect to handle the axios call
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/userdashboard");
+        const res = await axios.get("https://petsy-34xa.onrender.com/userdashboard");
         setData(res.data);
         console.log("Data fetched:", res.data);
       } catch (error) {
@@ -26,7 +26,7 @@ export default function UserDashboard({ username, onLogout }) {
   function clickHandler(pet) {
     let id = pet._id
 
-    axios.post("http://localhost:5000/adoptpet", {
+    axios.post("https://petsy-34xa.onrender.com/adoptpet", {
       id, username
     }).then(res => {
       confirmAlert({

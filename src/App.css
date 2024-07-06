@@ -1,11 +1,12 @@
-
+body{
+  height: auto;
+}
   nav {
   height: 15vh;
   background-color: rgb(239, 121, 100);
   color: white;
-  display: gird;
-  grid-template-rows: 1fr 1fr 1fr;
-  place-items:center;
+  display: flex;
+  justify-content: space-between;
 
 }
 
@@ -14,7 +15,13 @@ nav ul {
   justify-content: center;
   align-items: center;
 }
+.ul{
 
+  justify-content: center;
+  align-items: center;
+  display: block;
+  display: flex;
+}
 nav ul li {
   margin: 15px;
   list-style: none;
@@ -47,7 +54,7 @@ a {
 .ul-show {
   display: flex;
   flex-direction: column;
-  transition: 1s linear ease;
+  transition: 1s linear ease; 
 
 }
 
@@ -82,7 +89,7 @@ footer {
   justify-content: center;
   align-items: center;
   height: 80vh;
-  background: linear-gradient(#d86234, #245ec1);
+  margin: 0;
 }
 
 .login-form {
@@ -91,7 +98,7 @@ footer {
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
+margin: 0;
 }
 
 .login-form h2 {
@@ -431,9 +438,11 @@ h1 {
 
 .pet-details {
   display: flex;
-  align-items: center;
+
   justify-content: space-around;
   flex-grow: 1;
+  width:100%;
+  
 }
 
 .pet-name {
@@ -488,15 +497,12 @@ h1 {
 
 .dashboard-content-register {
   flex: 1;
-  display: flex;
-  justify-content: center;
-
 
 }
 
 .form {
   background-color: #f9f9f9;
-  padding: 30px;
+  padding: 10px;
   width: 800px;
   width: 100%;
   margin-top: 50px;
@@ -947,6 +953,12 @@ button[type="submit"]:hover {
   width: 100vw;
   text-align: center;
 }
+.buttons {
+  text-align: center;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
 
 @media only screen and (max-width:800px) {
   .home {
@@ -967,6 +979,10 @@ button[type="submit"]:hover {
 .img-box2{
   background-color: #000000;
 }
+.login-form {
+  margin-top: 40px;
+}
+
   .home-txt {
     width: 50%;
     height: 20vh;
@@ -994,11 +1010,11 @@ button[type="submit"]:hover {
   nav {
     display: flex;
     flex-direction: column;
-    height: 26vh;
-    row-gap: 10px;
+    row-gap: 15px;
+    height: auto;
   }
   nav ul li {
-    margin: 10px;
+    margin: 20px;
   }
   nav span {
     display: flex;
@@ -1013,6 +1029,7 @@ button[type="submit"]:hover {
     justify-content: space-between;
     align-items: center;
   }
+
 
   .ul {
     display: none;
@@ -1034,6 +1051,8 @@ button[type="submit"]:hover {
 
   .buttons {
     display: block;
+    height: 7vh;
+   
   }
 
   .log-out {
@@ -1063,9 +1082,16 @@ button[type="submit"]:hover {
   .user-image {
     justify-content: space-around;
   }
-
+.form{
+  border: none;
+  width: 95vw;
+}
+.row{
+  width: 95vw;
+}
   .pet-details {
     flex-direction: column;
+    height:auto;
   }
 
   .table-box {
@@ -1080,7 +1106,7 @@ button[type="submit"]:hover {
   }
 
   .table-box {
-    height: 70vh;
+    height: 76vh;
     width: 70vw;
   }
 

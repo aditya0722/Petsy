@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaDashcube, FaLine, FaUser } from 'react-icons/fa';
 import { Fa42Group } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
-
+import "../App.css";
 const NavigationBar = ({isAuthenticated,username,onLogout}) => {
   const [style,setstyle]=useState("ul")
   function tooglehandler(){

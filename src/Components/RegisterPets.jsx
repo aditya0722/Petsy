@@ -33,7 +33,7 @@ export default function Registerpet({ username, onLogout }) {
         formData.append("price", price);
         formData.append("username", username);
 
-        axios.post("http://localhost:5000/registerpet", formData, {
+        axios.post("https://petsy-34xa.onrender.com/registerpet", formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
@@ -148,7 +148,7 @@ export default function Registerpet({ username, onLogout }) {
               }
               
             }} /></h1>
-                    <div className="container">
+                    <div className="container-register">
                     
                         <form className="form" onSubmit={formSubmitHandller}>
                             <div className="row">

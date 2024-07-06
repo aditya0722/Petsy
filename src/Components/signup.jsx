@@ -17,7 +17,7 @@ export default function signup() {
         if (Password === cPassword) {
             const password = await bcrypt.hash(Password, 10)
             try {
-                await axios.post("http://localhost:5000/signup", {
+                await axios.post("https://petsy-34xa.onrender.com/signup", {
                     useName, email, password
                 }).then(res => {
                     if (res.data == "exits") {

@@ -5,10 +5,12 @@ import UserPop from "../popups/user";
 import { confirmAlert } from "react-confirm-alert";
 import { FaPenAlt, FaList, FaHome, FaCartPlus, FaOutdent, FaSearch, FaDog } from 'react-icons/fa';
 import { RxExit, RxPerson } from "react-icons/rx";
-
+import { BiExit } from "react-icons/bi";
+import { FaSliders } from "react-icons/fa6";
 export default function UserAppliedAdoption({ username, onLogout }) {
     const [data, setData] = useState({ pets: [], appliedUsers: [] });
     const [selectedUser, setSelectedUser] = useState(null);
+    const [togBLock, settogBLock] = useState("sidebar");
     function userPop(item){
         confirmAlert({
             customUI: ({ onClose }) => {
@@ -42,8 +44,16 @@ export default function UserAppliedAdoption({ username, onLogout }) {
     return (
         <>
             <div className="user-dashboard">
-                <div className="sidebar">
-                    <h2><Link to="/userDashboard"> <FaHome className="icon" />Dashboard</Link></h2>
+            <div className={togBLock}>
+                    <h2><Link to="/userDashboard"> <FaHome className="icon" /><span>Dashboard </span></Link><BiExit className="exit-nav" onClick={() => {
+                        if (togBLock === "sidebar-block") {
+                            settogBLock("sidebar");
+                        }
+                        else {
+                            settogBLock("sidebar-block");
+                        }
+                    }} />
+                    </h2>
                     <ul>
                         <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
                         <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
@@ -52,36 +62,24 @@ export default function UserAppliedAdoption({ username, onLogout }) {
                         <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
                     </ul>
                 </div>
-
                 <div className="list-container">
                     <div className="list">
-                        <h1>Check out who wants to Adopt your Pets</h1>
+                        <h1><FaSliders className="sliders-button" onClick={() => {
+              if (togBLock === "sidebar") {
+                settogBLock("sidebar-block");
+              }
+              else {
+                settogBLock("sidebar");
+              }
+ 
+            }} />Pets</h1>
                         <div className="flex-container-dashboard padd">
                             <span className="search-box">
                                 <input type="search" placeholder="seacrh" />
                                 <FaSearch className="icon" />
                             </span>
 
-                            <span>
-                                <select className="filter-dropdown">
-                                    <option value="filter1">Filter 1</option>
-                                    <option value="filter2">Filter 2</option>
-                                    <option value="filter3">Filter 3</option>
-                                </select>
-                                <select className="filter-dropdown">
-                                    <option value="filter1">Filter 1</option>
-                                    <option value="filter2">Filter 2</option>
-                                    <option value="filter3">Filter 3</option>
-                                </select>
-                                <select className="filter-dropdown">
-                                    <option value="filter1">Filter 1</option>
-                                    <option value="filter2">Filter 2</option>
-                                    <option value="filter3">Filter 3</option>
-                                </select>
-                                <button type="submit" className="petregister-button">Add Pets
-                                    <FaCartPlus></FaCartPlus>
-                                </button>
-                            </span>
+                           
                         </div>
                         <div className="table-container">
                             {data.appliedUsers.length > 0 ? (

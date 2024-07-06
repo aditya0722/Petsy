@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { FaHome, FaPenAlt, FaList, FaCartPlus, FaDog, FaOutdent, FaSearch, FaTrashAlt, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaHome, FaPenAlt,FaList, FaCartPlus, FaDog, FaOutdent, FaSearch, FaTrashAlt, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { confirmAlert } from 'react-confirm-alert';
+import { FaSliders } from "react-icons/fa6";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import '../App.css'; // Custom CSS file
-
+import { BiExit } from "react-icons/bi";
 export default function PetAdoptionList({ username, onLogout }) {
     const [data, setData] = useState([]);
-
+    const [togBLock, settogBLock] = useState("sidebar");
     const deletePet = (id) => {
-        axios.post("http://localhost:5000/deleteselling", {
+        axios.post("https://petsy-34xa.onrender.com/deleteselling", {
             username, id
         })
             .then(res => {
@@ -79,19 +80,36 @@ export default function PetAdoptionList({ username, onLogout }) {
     return (
         <>
             <div className="user-dashboard">
-                <div className="sidebar">
-                    <h2><Link to="/userDashboard"> <FaHome className="icon" />Dashboard</Link></h2>
+            <div className={togBLock}>
+                    <h2><Link to="/userDashboard"> <FaHome className="icon" /><span>Dashboard </span></Link><BiExit className="exit-nav" onClick={() => {
+                        if (togBLock === "sidebar-block") {
+                            settogBLock("sidebar");
+                        }
+                        else {
+                            settogBLock("sidebar-block");
+                        }
+                    }} />
+                    </h2>
                     <ul>
                         <li><Link to="/Registerpet"><FaPenAlt className="icon" /> Register for Selling Pets</Link></li>
                         <li><Link to="/PetAdoptionList"><FaList className="icon" /> Pet Selling List</Link></li>
                         <li><Link to="/AppliedForAddoption"><FaCartPlus className="icon" />Your Application for Addoption</Link></li>
                         <li><Link to="/userAppliedAddoption"><FaDog className="icon" />User Application for Addoption </Link></li>
-                        <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" />Log out</Link></li>
+                        <li><Link to="/" onClick={onLogout}><FaOutdent className="icon" onClick={onLogout} />Log out</Link></li>
                     </ul>
                 </div>
                 <div className="list-container">
                     <div className="list">
-                        <h1>Check out Your Addoption List</h1>
+                        <h1>
+                    <FaSliders className="sliders-button" onClick={() => {
+              if (togBLock === "sidebar") {
+                settogBLock("sidebar-block");
+              }
+              else {
+                settogBLock("sidebar");
+              }
+              
+            }} /></h1>
                         <div className="flex-container-dashboard padd">
                             <span className="search-box">
                                 <input type="search" placeholder="search" />
